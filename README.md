@@ -3,8 +3,13 @@
 ## Diagrama de classe do sistema
 <br>
 
-![UML Logo](./uml/diagram.jpg)
+![UML Logo](./screenshot/diagram.jpg)
 
+<br>
+<br>
+
+# Estrutura de pastas do projeto
+![UML Logo](./screenshot/Estrutura-de-Projetos.jpg)
 <br>
 <br>
 
