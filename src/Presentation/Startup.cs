@@ -1,8 +1,11 @@
+using Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace Presentation
 {
@@ -20,6 +23,15 @@ namespace Presentation
         {
 
             services.AddControllers();
+
+            services.AddDbContext<EFApplicationContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("SchoolDatabase")));
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sistema Escolar", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -28,6 +40,16 @@ namespace Presentation
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistema Escolar");
+
+                });
             }
 
             app.UseHttpsRedirection();
@@ -40,6 +62,7 @@ namespace Presentation
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
